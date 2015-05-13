@@ -49,21 +49,22 @@ function checkForm(e)
 {
     hide();
     show();
-    confirmation.innerHTML += output;
+    confirm.innerHTML += output;
+    console.log(jsonObj);
 }
 }
 function initialize()
 {
     geocoder = new google.maps.Geocoder();
-    var zip = document.querySelector('input[name="zip"]').value;
-    zip.addEventListner("blur", codeAddress);
+    var zip = document.querySelector('input[name="zip"]');
+    zip.addEventListener("blur", codeAddress);
 }
 
 function codeAddress()
 {
     var address = document.querySelector('input[name="zip"]').value;
     geocoder.geocode({'address': address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
+        if (status === google.maps.GeocoderStatus.OK) {
             console.log(results);
             displayResults(results);
         } else {
@@ -76,7 +77,8 @@ function displayResults(results)
 {
     var geoCodeJsonObj = results;
     var geoCodeJsonObjAddress = geoCodeJsonObj[0].address_components;
-    var geoCodeObjLen = geoCodeJsonObjAddress.Length;
+    var geoCodeObjLen = geoCodeJsonObjAddress.length;
+    console.log(geoCodeObjLen);
     for (var i = 0; i < geoCodeObjLen; i++)
     {
         if (geoCodeJsonObjAddress[i].types.indexOf('locality') > -1)
@@ -92,5 +94,6 @@ function displayResults(results)
         }
     }
 }
+
 google.maps.event.addDomListener(window, 'load', initialize);
 

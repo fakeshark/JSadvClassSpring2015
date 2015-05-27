@@ -44,6 +44,14 @@ function checkForm(e)
             output += label.text() + ": " + input.val() + "<br />";
         }
     }
+    
+    
+    if (jsonObj.password !== jsonObj.confirmpassword)
+    {
+        $('.passwordError').addClass('error');
+        $('.confirmpasswordError').addClass('error');
+        isValid = false;
+    }
 
     if (isValid)
     {

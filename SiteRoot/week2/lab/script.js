@@ -27,6 +27,9 @@ function checkForm(e)
     var isValid = true;
     var fields = document.querySelectorAll('form p');
     var len = fields.length;
+    var pw = document.querySelector('input[name="password"]');
+    var cpw = document.querySelector('input[name="confirmpassword"]');
+    var pwM = document.querySelector('span[id="pwMatch"]');
 
     var jsonObj = {};
 
@@ -44,14 +47,22 @@ function checkForm(e)
             output += label.innerText + ": " + input.value + "<br />";
         }
     }
-    
+
+    if (jsonObj.password !== jsonObj.confirmpassword)
+    {
+        document.querySelector('.passwordError').classList.add('error');
+        document.querySelector('.confirmpasswordError').classList.add('error');
+        isValid = false;
+    }
+
     if (isValid)
-{
-    hide();
-    show();
-    confirm.innerHTML += output;
-    console.log(jsonObj);
-}
+    {
+        hide();
+        show();
+        confirm.innerHTML += output;
+        console.log(jsonObj);
+        console.log(pw.value, cpw.value);
+    }
 }
 function initialize()
 {

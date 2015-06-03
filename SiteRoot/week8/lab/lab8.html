@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 8</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <style type="text/css">
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+            <canvas id="race" width="750" height="150"></canvas>
+        <br />
+        <button id="startRace">Re-start Race!</button>
+
+        <script type="text/javascript">
+            var startBtn = document.querySelector('#startRace');
+            var bluePosition;
+            var redPosition;
+            var blue = "blue";
+            var blueStart = 0;
+            var redStart = 0;
+            var blueY = 10;
+            var red = "red";
+            var redY = 80;
+            var winner = "";
+            var interval = setInterval(moveCar, 100);
+            var X;
+            var can = document.querySelector('canvas'),
+                    ctx = can.getContext("2d");
+            var startRace = document.querySelector('#startRace');
+            
+            startBtn.style.display = 'none';
+
+            startRace.addEventListener('click', restart);
+            window.addEventListener('load', beginRace);
+            
+            function beginRace()
+            {
+                if (winner === "") {
+                    moveCar();
+                } else {
+                    clearInterval(interval);
+                }
+            }
+
+            function moveCar()
+            {
+                if (winner === "")
+                {
+                    clear();
+                    bluePosition = (drawCar(blue, randNum(30), blueY));
+                    redPosition = (drawCar(red, randNum(30), redY));
+                    console.log(bluePosition, redPosition);
+                    if (bluePosition >= ctx.canvas.width)
+                    {
+                        winner = "blue";
+                    }
+                    if (redPosition >= ctx.canvas.width)
+                    {
+                        winner = "red";
+                    }
+                }
+                else
+                {
+                    ctx.fillStyle = winner;
+                    ctx.font = "16pt Helvetica";
+                    ctx.fillText("The " + winner + " car has won the race!!!", can.width - 575, can.height - 75);
+                    startBtn.style.display = 'block';
+                }
+            }
+
+            function drawCar(color, randomX, Y)
+            {
+                if (color === red)
+                {
+                    redStart += randomX;
+                    X = redStart;
+                }
+                else
+                {
+                    blueStart += randomX;
+                    X = blueStart;
+                }
+                ;
+                ctx.fillStyle = color;
+                ctx.fillRect(X, Y, 100, 50); // x, y, width, height
+                ctx.beginPath();
+                ctx.moveTo(X, Y); //x, y
+                ctx.lineTo((X + 100), Y);
+                ctx.lineTo((X + 100), (Y + 50));
+                ctx.lineTo(X, (Y + 50));
+                return (X + 100);
+            }
+
+            function restart()
+            {
+                clear();
+                startBtn.style.display = 'none';
+                bluePosition = 0;
+                redPosition = 0;
+                blue = "blue";
+                blueStart = 0;
+                redStart = 0;
+                blueY = 10;
+                red = "red";
+                redY = 80;
+                winner = "";
+                interval = setInterval(moveCar, 100);
+                X = 0;
+            }
+
+            function clear()
+            {
+                var tmp = ctx.fillStyle;
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.fillStyle = tmp;
+            }
+
+            function randNum(max)
+            {
+                return Math.ceil(Math.random() * max) + 1;
+            }
+            
+        </script>
+    </body>
+</html>
